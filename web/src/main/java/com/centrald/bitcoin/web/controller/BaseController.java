@@ -84,6 +84,14 @@ public  abstract class BaseController {
         }
     }
 
+    //email检测
+    protected static void checkEmail(String email) {
+        Boolean message = EmailCheckUtils.isEmail(email);
+
+        if(!message) {
+            throw new ParamsException("请输入合法的email账号");
+        }
+    }
 
     @ExceptionHandler
     @ResponseBody

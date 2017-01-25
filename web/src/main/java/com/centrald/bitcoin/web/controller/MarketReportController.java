@@ -64,5 +64,10 @@ public class MarketReportController {
     /**
      * 实时行情
      */
+    @RequestMapping(path = "test", method = RequestMethod.POST)
+    @ResponseBody
+    public String getTest() {
 
+
+    }
 }

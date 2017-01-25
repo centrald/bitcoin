@@ -14,12 +14,12 @@ import org.testng.annotations.Test;
 public class DesUtilsTest extends AbstractTestNGSpringContextTests{
 
    @Test(priority = 0)
-    private void testDes() {
+    private void testDes() throws Exception{
        String str = "centrald";
        //密码，长度要是8的倍数
-       String password = "9588021";
+       String password = "95880212";
 
-       byte[] result = DESUtils.encrypt(str.getBytes(),password);
+       byte[] result = DESUtils.encrypt(str.getBytes("UTF-8"),password);
        System.out.println("加密后："+new String(result));
        //直接将如上内容解密
        try {

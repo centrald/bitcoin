@@ -6,9 +6,12 @@ package com.centrald.bitcoin.common.domain.entity;
 public class UserInfo extends BaseEntity{
 
     private String phoneNumber;
-    private String userName;
+    private String userName= " ";
     private String password;
     private String uuid;
+
+    private String status;
+    private String email;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -37,4 +40,12 @@ public class UserInfo extends BaseEntity{
     public String getUuid() {return uuid;}
 
     public void setUuid(String uuid) {this.uuid = uuid;}
+
+    public String getStatus() {return status;}
+
+    public void setStatus(String status) {this.status = status;}
+
+    public String getEmail() {return email;}
+
+    public void setEmail(String email) {this.email = email;}
 }

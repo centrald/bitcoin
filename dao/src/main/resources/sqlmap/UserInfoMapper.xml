@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.centrald.bitcoin.dao.mapper.UserInfoMapper">
+
+    <sql id="tableName">
+        UserInfo
+    </sql>
+
+    <sql id="columnList">
+        id, created, updated, isDeleted, phoneNumber, userName, password, uuid, status, email
+    </sql>
+
+    <sql id="query">
+        <where>
+
+            <if test="isDeleted!=null">
+                AND isDeleted = #{isDeleted}
+            </if>
+
+            <if test="status!=null and status!=''">
+                AND status = #{status}
+            </if>
+
+            <if test="phoneNumber!=null and phoneNumber!=''">
+                AND phoneNumber = #{phoneNumber}
+            </if>
+
+            <if test="userName!=null and userName!=''">
+                AND userName = #{userName}
+            </if>
+
+            <if test="password!=null and password!=''">
+                AND password = #{password}
+            </if>
+
+            <if test="uuid!=null and uuid!=''">
+                AND uuid = #{uuid}
+            </if>
+
+            <if test="email!=null and email!=''">
+                AND email = #{email}
+            </if>
+
+            <if test="createdStart!=null">
+                AND <![CDATA[ created >= #{createdStart} ]]>
+            </if>
+            <if test="createdEnd!=null">
+                AND <![CDATA[ created <= #{createdEnd} ]]>
+            </if>
+            <if test="updatedStart!=null">
+                AND <![CDATA[ updated >= #{updatedStart} ]]>
+            </if>
+            <if test="updatedEnd!=null">
+                AND <![CDATA[ updated <= #{updatedEnd} ]]>
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                AND (
+                phoneNumber LIKE CONCAT('%', #{keywords}, '%')
+                OR userName LIKE CONCAT('%', #{keywords}, '%')
+                OR uuid LIKE CONCAT('%', #{keywords}, '%')
+                OR email LIKE CONCAT('%', #{keywords}, '%')
+                )
+            </if>
+        </where>
+    </sql>
+
+    <sql id="order">
+        <if test="orderBy!=null and orderBy!=''">
+            ORDER BY ${orderBy}
+            <if test="orderType!=null and orderType!=''">
+                ${orderType}
+            </if>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <choose>
+            <when test="limitStart!=null and limitStart!='' and pageSize!=null and pageSize!=''">
+                LIMIT ${limitStart}, ${pageSize}
+            </when>
+            <when test="pageSize!=null and pageSize!=''">
+                LIMIT ${pageSize}
+            </when>
+            <otherwise>
+                LIMIT 9999
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="query"  parameterType="UserInfoQuery" resultType="UserInfo">
+        SELECT
+        <include refid="columnList"/>
+        FROM
+        <include refid="tableName"/>
+        <include refid="query"/>
+        <include refid="order"/>
+        <include refid="limit"/>
+    </select>
+
+    <select id="get" parameterType="Long" resultType="UserInfo">
+        SELECT
+        <include refid="columnList"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE id = #{id}
+        AND isDeleted = 0
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        <include refid="tableName"/>
+        (phoneNumber, userName, password, uuid ,status, email)
+        VALUES
+        (#{phoneNumber}, #{userName}, #{password}, #{uuid}, #{status}, #{email})
+    </insert>
+
+    <delete id="delete" parameterType="long">
+        UPDATE
+        <include refid="tableName"/>
+        SET isDeleted = 1
+        WHERE id = #{id}
+        LIMIT 1
+    </delete>
+
+    <update id="update" parameterType="UserInfo">
+        UPDATE
+        <include refid="tableName"/>
+        SET isDeleted = #{isDeleted},
+        phoneNumber = #{phoneNumber},
+        userName = #{userName},
+        password = #{password},
+        uuid = #{uuid},
+        status = #{status},
+        email = #{email}
+        WHERE id = #{id}
+        LIMIT 1
+    </update>
+
+</mapper>
